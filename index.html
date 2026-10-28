@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASF</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 30px 18px;
+      background: #0d0d14;
+      color: #f5f3fa;
+      font-family: Arial, sans-serif;
+    }
+
+    .container { max-width: 900px; margin: auto; }
+
+    header, .hero, section { margin-bottom: 35px; }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #292938;
+      padding-bottom: 18px;
+    }
+
+    header strong { color: #b59aff; font-size: 20px; }
+
+    nav { display: flex; gap: 18px; }
+    nav a, a { color: inherit; text-decoration: none; }
+
+    .hero {
+      padding: 55px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #211738, #12121c);
+      border: 1px solid #34284c;
+      border-radius: 20px;
+    }
+
+    h1 { font-size: clamp(36px, 8vw, 60px); margin: 0 0 15px; }
+    h1 span { color: #b59aff; }
+    p { color: #b8b6c5; line-height: 1.6; }
+
+    .button {
+      display: inline-block;
+      margin: 8px 5px;
+      padding: 13px 18px;
+      border-radius: 10px;
+      background: #a78bfa;
+      color: #171020;
+      font-weight: bold;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: #f5f3fa;
+      border: 1px solid #49445a;
+    }
+
+    .grid, .offers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .offers { grid-template-columns: repeat(2, 1fr); }
+
+    .card, .offer {
+      padding: 22px;
+      background: #161620;
+      border: 1px solid #2b2b3a;
+      border-radius: 15px;
+    }
+
+    .card h3, .offer h3 { margin-top: 10px; }
+    .price { font-size: 24px; font-weight: bold; margin: 20px 0; }
+    footer { border-top: 1px solid #292938; padding-top: 20px; color: #898797; }
+
+    @media (max-width: 650px) {
+      header { align-items: flex-start; flex-direction: column; gap: 15px; }
+      nav { gap: 12px; font-size: 14px; }
+      .grid, .offers { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <strong>ASF</strong>
+      <nav>
+        <a href="#catalog">Магазин</a>
+        <a href="#ads">Реклама</a>
+        <a href="#support">Поддержка</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="hero">
+        <h1>Магазин <span>услуг</span></h1>
+        <p>Выберите услугу и напишите мне в Telegram, чтобы оформить заказ.</p>
+        <a class="button" href="#catalog">Открыть каталог</a>
+        <a class="button secondary contact"
+           data-message="Здравствуйте! Нужна консультация по услугам."
+           href="#">Написать мне</a>
+      </div>
+
+      <section id="catalog">
+        <h2>Каталог</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>📣 Реклама</h3>
+            <p>Аккаунты с прогревом и без.</p>
+            <a class="button secondary" href="#ads">Обсудить заказ</a>
+          </div>
+
+          <div class="card">
+            <h3>🌐 Создание сайта</h3>
+            <p>Обсудим стоимость и сроки в личных сообщениях.</p>
+            <a class="button secondary contact"
+               data-message="Здравствуйте! Хочу заказать сайт."
+               href="#">Обсудить заказ</a>
+          </div>
+
+          <div class="card">
+            <h3>🤖 Telegram-бот</h3>
+            <p>Расскажите, какого бота хотите.</p>
+            <a class="button secondary contact"
+               data-message="Здравствуйте! Хочу заказать Telegram-бота."
+               href="#">Обсудить заказ</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="ads">
+        <h2>Реклама</h2>
+        <div class="offers">
+          <div class="offer">
+            <h3>Аккаунт с прогревом</h3>
+            <div class="price" id="warm-price"></div>
+            <a class="button" id="warm-order" href="#">Заказать</a>
+          </div>
+
+          <div class="offer">
+            <h3>Аккаунт без прогрева</h3>
+            <div class="price" id="cold-price"></div>
+            <a class="button" id="cold-order" href="#">Заказать</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="support" class="card">
+        <h2>Нужна помощь?</h2>
+        <p>Нажмите кнопку, и Telegram подготовит сообщение для поддержки.</p>
+        <a class="button contact"
+           data-message="Здравствуйте! Нужна поддержка."
+           href="#">Написать в поддержку</a>
+      </section>
+    </main>
+
+    <footer>© <span id="year"></span> Мой магазин</footer>
+  </div>
+
+  <script>
+    // Замени ссылки и цены на свои.
+    const PROFILE_URL = "https://t.me/Vizs2";
+    const ADS_PROFILE_URL = "https://t.me/sniskersik";
+    const WARM_PRICE = "50 Gram";
+    const COLD_PRICE = "35 Gram";
+
+    function telegramLink(profile, message) {
+      const username = profile
+        .replace(/^https?:\/\/(t\.me|telegram\.me)\//, "")
+        .replace(/^@/, "")
+        .replace(/\/$/, "");
+
+      return `https://t.me/${username}?text=${encodeURIComponent(message)}`;
+    }
+
+    document.querySelectorAll(".contact").forEach((link) => {
+      link.href = link.closest("#support") ? ADS_PROFILE_URL : telegramLink(PROFILE_URL, link.dataset.message);
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    });
+
+    document.querySelector("#warm-price").textContent = WARM_PRICE + "";
+    document.querySelector("#cold-price").textContent = COLD_PRICE + "";
+
+    document.querySelector("#warm-order").href = telegramLink(
+      PROFILE_URL,
+      "Здравствуйте! Хочу заказать рекламный аккаунт с прогревом."
+    );
+
+    document.querySelector("#cold-order").href = telegramLink(
+      PROFILE_URL,
+      "Здравствуйте! Хочу заказать рекламный аккаунт без прогрева."
+    );
+
+    document.querySelectorAll("#warm-order, #cold-order").forEach((link) => {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    });
+
+    document.querySelector("#year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
